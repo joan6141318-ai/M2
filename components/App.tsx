@@ -16,6 +16,26 @@ import TalentDetailModal from './TalentDetailModal';
 import PaymentTableModal from './PaymentTableModal';
 import AnimatedRobot from './AnimatedRobot';
 import type { Talent } from '../types';
+import { isApiAvailable } from '../services/geminiService';
+
+const ApiKeyErrorOverlay: React.FC = () => (
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4 text-center">
+        <div className="bg-[#100F13]/90 border border-red-500/50 rounded-2xl p-8 w-full max-w-lg animate-scale-in">
+            <div className="w-16 h-16 mx-auto bg-red-500/20 rounded-full flex items-center justify-center border-2 border-red-500/50">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+            </div>
+            <h2 className="text-2xl font-bold mt-6 text-white">Error de Configuración</h2>
+            <p className="mt-2 text-gray-300">
+                La aplicación no se puede conectar a los servicios de IA.
+            </p>
+            <p className="mt-4 text-sm text-gray-400 bg-white/5 p-3 rounded-lg">
+                Si eres el desarrollador, asegúrate de haber configurado la variable de entorno <code className="bg-black/50 text-purple-300 px-1 py-0.5 rounded">API_KEY</code> en tu plataforma de despliegue (ej. Vercel).
+            </p>
+        </div>
+    </div>
+);
 
 const App: React.FC = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -35,6 +55,8 @@ const App: React.FC = () => {
   const tipsRef = useRef<HTMLElement>(null);
   const faqRef = useRef<HTMLElement>(null);
   const footerRef = useRef<HTMLElement>(null);
+  
+  const apiAvailable = isApiAvailable();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -75,6 +97,8 @@ const App: React.FC = () => {
 
   return (
     <>
+      {!apiAvailable && <ApiKeyErrorOverlay />}
+
       {/* Reverted background container with original transition effect */}
       <div className="fixed inset-0 z-0">
         <div
@@ -109,8 +133,8 @@ const App: React.FC = () => {
       </div>
 
       {/* Overlays and Modals */}
-      <AnimatedRobot onClick={() => setIsChatOpen(!isChatOpen)} />
-      <Chatbot isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
+      {apiAvailable && <AnimatedRobot onClick={() => setIsChatOpen(!isChatOpen)} />}
+      {apiAvailable && <Chatbot isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />}
       <NavigationMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} navItems={navItems} />
       <ApplicationForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
       <PodcastPlayer isOpen={isPodcastPlayerOpen} onClose={() => setIsPodcastPlayerOpen(false)} />

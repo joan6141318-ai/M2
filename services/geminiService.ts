@@ -1,8 +1,8 @@
 import { GoogleGenAI, Chat } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 const model = 'gemini-2.5-flash';
 
+let ai: GoogleGenAI | null = null;
 let chat: Chat | null = null;
 
 const systemInstruction = `
@@ -72,10 +72,34 @@ Los pagos se realizan dentro de la primera semana de cada mes y son en base a lo
 `;
 
 /**
+ * Checks if the API key is available in the environment variables.
+ * @returns boolean - True if API_KEY is set, false otherwise.
+ */
+export const isApiAvailable = (): boolean => {
+    return !!process.env.API_KEY;
+};
+
+// Function to lazily initialize the AI client
+const getAi = (): GoogleGenAI => {
+  if (ai) {
+    return ai;
+  }
+  if (!isApiAvailable()) {
+    // This should ideally not be hit if the UI checks first, but it's a safeguard.
+    throw new Error("API_KEY environment variable not set.");
+  }
+  // The API key is guaranteed to be a string here due to the check above
+  ai = new GoogleGenAI({ apiKey: process.env.API_KEY! });
+  return ai;
+}
+
+
+/**
  * Starts a new chat session. This resets any previous session.
  */
 export const startChat = () => {
-    chat = ai.chats.create({
+    const aiInstance = getAi();
+    chat = aiInstance.chats.create({
         model: model,
         config: {
             systemInstruction: systemInstruction,

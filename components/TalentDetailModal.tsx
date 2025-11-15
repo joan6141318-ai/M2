@@ -8,6 +8,12 @@ const CloseIcon = () => (
     </svg>
 );
 
+const VerifiedIcon = () => (
+    <svg className="w-6 h-6 ml-2 text-blue-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+    </svg>
+);
+
 const TwitterIcon = () => (
     <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
         <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
@@ -26,55 +32,56 @@ const TikTokIcon = () => (
     </svg>
 );
 
-const TwitchIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.714 0h1.715v5.143h-1.715zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0H6zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714v9.429z"/></svg>
-);
-
-const YouTubeIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-);
-
-const BigoLiveIcon = () => (
-    <img src="https://i.postimg.cc/DyHHxDjx/bigo-live-seeklogo.png" alt="Bigo Live logo" className="h-6 w-6" />
-);
-
-const renderPlatformIcon = (platform: Talent['platform']) => {
-    switch (platform) {
-      case 'Twitch':
-        return <TwitchIcon />;
-      case 'YouTube':
-        return <YouTubeIcon />;
-      case 'Bigo Live':
-        return <BigoLiveIcon />;
-      default:
-        return null;
-    }
-};
-
-
 interface TalentDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
   talent: Talent | null;
 }
 
+const FormattedBio: React.FC<{ text: string }> = ({ text }) => {
+  const parts = text.split(/(\*\*.*?\*\*)/g);
+  return (
+    <p className="text-gray-300 text-base leading-relaxed whitespace-pre-line">
+      {parts.map((part, index) => {
+        if (part.startsWith('**') && part.endsWith('**')) {
+          return <strong key={index}>{part.slice(2, -2)}</strong>;
+        }
+        return part;
+      })}
+    </p>
+  );
+};
+
 const TalentDetailModal: React.FC<TalentDetailModalProps> = ({ isOpen, onClose, talent }) => {
   if (!isOpen || !talent) return null;
+
+  // Parse the bio to separate the main description from the key-value stats
+  const bioParts = talent.bio.split('\n\n');
+  const mainDescription = bioParts[0];
+  const stats = bioParts.slice(1)
+    .map(line => {
+      const splitPoint = line.indexOf(':');
+      if (splitPoint === -1) return null;
+      const key = line.substring(0, splitPoint).trim();
+      const value = line.substring(splitPoint + 1).trim();
+      return { key, value };
+    })
+    .filter((item): item is { key: string; value: string } => item !== null);
 
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={onClose}>
       <div 
-        className="bg-black/50 backdrop-blur-2xl border border-white/10 rounded-2xl w-full max-w-5xl max-h-[90vh] relative flex flex-col md:flex-row animate-scale-in overflow-hidden" 
+        className="bg-black/50 backdrop-blur-2xl border border-white/10 rounded-2xl w-full max-w-5xl max-h-[90vh] relative flex flex-row animate-scale-in overflow-hidden" 
         onClick={e => e.stopPropagation()}
       >
         <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-white z-20 p-2 bg-black/30 rounded-full">
           <CloseIcon />
         </button>
 
-        {/* Left Side: iPhone Mockup */}
-        <div className="w-full md:w-1/2 flex items-center justify-center p-4 sm:p-8 bg-black/20">
-          <div className="w-full max-w-[280px] aspect-[9/19.5] bg-black border-4 border-gray-700 rounded-[2.5rem] p-2.5 shadow-2xl shadow-purple-900/50">
-              <div className="w-full h-full rounded-[2rem] overflow-hidden relative">
+        {/* Left Side: All-Screen Phone Mockup */}
+        <div className="w-2/5 flex items-center justify-center p-4 sm:p-8 bg-black/20">
+          <div className="w-full max-w-[200px] sm:max-w-[280px] aspect-[9/19.5] bg-black border-2 border-gray-800 rounded-[1.5rem] sm:rounded-[2.25rem] p-1.5 shadow-2xl shadow-purple-900/50">
+              <div className="w-full h-full rounded-[1.4rem] sm:rounded-[2rem] overflow-hidden relative">
                   {talent.videoId ? (
                       <video
                           key={talent.videoId}
@@ -85,31 +92,36 @@ const TalentDetailModal: React.FC<TalentDetailModalProps> = ({ isOpen, onClose, 
                   ) : (
                       <img src={talent.imageUrl} alt={talent.name} className="w-full h-full object-cover" />
                   )}
-                  {/* Dynamic Island style notch */}
-                  <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-[40%] h-6 bg-black rounded-full"></div>
               </div>
           </div>
         </div>
 
 
         {/* Right Side: Ficha Técnica */}
-        <div className="w-full md:w-1/2 flex flex-col p-8 bg-black/60 backdrop-blur-sm relative overflow-y-auto">
+        <div className="w-3/5 flex flex-col p-6 sm:p-10 bg-black/60 backdrop-blur-sm relative">
             <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-purple-900/50 to-transparent pointer-events-none"></div>
             
-            <div className="flex items-center text-purple-400">
-                {renderPlatformIcon(talent.platform)}
-                <span className="ml-2 font-semibold tracking-wider uppercase">{talent.platform}</span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white flex items-center flex-shrink-0 mt-8 mb-4">
+              {talent.name}
+              {talent.isVerified && <VerifiedIcon />}
+            </h2>
+            
+            <div className="flex-grow min-h-0 overflow-y-auto hide-scrollbar pr-2">
+              <FormattedBio text={mainDescription} />
+              
+              {stats.length > 0 && (
+                <div className="mt-8 space-y-4">
+                  {stats.map((stat, index) => (
+                    <div key={index} className="flex justify-between items-center text-base">
+                      <span className="text-gray-400">{stat.key}</span>
+                      <span className="font-semibold text-white text-right">{stat.value}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
             
-            <h2 className="text-4xl md:text-5xl font-extrabold text-white mt-4">{talent.name}</h2>
-            
-            <div className="flex-grow mt-6 pr-4 overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
-              <p className="text-gray-300 leading-relaxed">
-                  {talent.bio}
-              </p>
-            </div>
-            
-            <div className="mt-auto pt-6 flex justify-start gap-4">
+            <div className="mt-auto pt-6 flex justify-start gap-4 flex-shrink-0">
                 {talent.socials.twitter && <a href={talent.socials.twitter} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white"><TwitterIcon /></a>}
                 {talent.socials.instagram && <a href={talent.socials.instagram} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white"><InstagramIcon /></a>}
                 {talent.socials.tiktok && <a href={talent.socials.tiktok} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white"><TikTokIcon /></a>}

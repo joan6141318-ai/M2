@@ -24,7 +24,8 @@ const talents: Talent[] = [
     platform: 'Bigo Live',
     imageUrl: 'https://i.postimg.cc/N0Z5jrFK/IMG_20251107_193051.jpg',
     videoId: 'https://res.cloudinary.com/dskj7hk3c/video/upload/InShot_20240713_180424194_u2s7yl.mp4',
-    bio: 'Stefi es una creadora de contenido vibrante y carismática que se especializa en gameplays llenos de humor y sesiones de "Just Chatting" donde conecta con su comunidad de una manera única y auténtica.',
+    bio: '**Vibrante, carismática y llena de humor**\nNo te pierdas sus gameplays y charlas únicas.\n\nRecord recaudación : 2.5 Millones\n\nPaís: Colombia',
+    isVerified: true,
     socials: {
       twitter: '#',
       instagram: '#',
@@ -36,7 +37,8 @@ const talents: Talent[] = [
     platform: 'Bigo Live',
     imageUrl: 'https://i.postimg.cc/rpn71VcF/In_Shot_20251107_185715214.jpg',
     videoId: 'https://res.cloudinary.com/dskj7hk3c/video/upload/v1721092800/samples/elephants.mp4',
-    bio: 'Valeria ilumina cada transmisión con su energía positiva. Su contenido se centra en el baile, la música y conversaciones inspiradoras con sus seguidores.',
+    bio: '**Energética, positiva e inspiradora**\nÚnete a sus transmisiones de baile y música.\n\nRecord recaudación : 3 Millones\n\nPaís: Colombia',
+    isVerified: true,
     socials: {
       twitter: '#',
       instagram: '#',
@@ -48,7 +50,8 @@ const talents: Talent[] = [
     platform: 'Bigo Live',
     imageUrl: 'https://i.postimg.cc/Dw1kLCZ3/IMG_20251113_221309.jpg',
     videoId: 'https://res.cloudinary.com/dskj7hk3c/video/upload/v1721092800/samples/caminandes.mp4',
-    bio: 'Conocida por su estilo único y su creatividad, Luna explora el arte y el diseño en vivo, compartiendo su proceso y creando una comunidad de artistas.',
+    bio: '**Creativa, única y muy artística**\nExplora el mundo del arte y diseño en sus directos.\n\nRecord recaudación : 1.8 Millones\n\nPaís: Venezuela',
+    isVerified: true,
     socials: {
         twitter: '#',
         instagram: '#',
@@ -60,7 +63,8 @@ const talents: Talent[] = [
     platform: 'Bigo Live',
     imageUrl: 'https://i.postimg.cc/R0Mtzmk6/IMG_20251107_183411.png',
     videoId: 'https://res.cloudinary.com/dskj7hk3c/video/upload/v1721092800/samples/sea-turtle.mp4',
-    bio: 'Sofia combina su pasión por los videojuegos de aventura con su amor por la narración, creando experiencias inmersivas y emocionantes para su audiencia.',
+    bio: '**Dulce, alegre y divertida**\nNo te pierdas sus transmisiones todos los días\n\nRecord recaudación : 1.5 Millones\n\nPaís: Colombia',
+    isVerified: true,
     socials: {
         twitter: '#',
         instagram: '#',
@@ -88,11 +92,10 @@ const renderPlatformIcon = (platform: Talent['platform']) => {
 };
 
 const OurTalents = React.forwardRef<HTMLElement, OurTalentsProps>(({ onTalentClick }, ref) => {
-  // Duplicate talents for a seamless loop
   const duplicatedTalents = [...talents, ...talents];
 
   return (
-    <section ref={ref} className="py-20 md:py-28 overflow-hidden">
+    <section ref={ref} className="py-20 md:py-28">
       <AnimatedSection>
         <div className="max-w-7xl mx-auto text-center px-4">
           <h2 className="text-5xl md:text-7xl font-extrabold tracking-tight text-white">
@@ -104,40 +107,37 @@ const OurTalents = React.forwardRef<HTMLElement, OurTalentsProps>(({ onTalentCli
         </div>
       </AnimatedSection>
       
-      <div 
-        className="mt-16 w-full relative [mask-image:linear-gradient(to_right,transparent,white_5%,white_95%,transparent)]"
-      >
-        <div 
-          className="flex gap-8 px-4 animate-scroll-slow hover:[animation-play-state:paused]"
-        >
+      <div className="mt-16 relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_5%,white_95%,transparent)]">
+        <div className="flex w-max animate-scroll hover:[animation-play-state:paused]">
           {duplicatedTalents.map((talent, index) => (
-            <div
-              key={`${talent.name}-${index}`}
-              className="relative w-64 h-96 sm:w-72 sm:h-[28rem] flex-shrink-0 cursor-pointer group rounded-2xl overflow-hidden"
-              onClick={() => onTalentClick(talent)}
-            >
-              <img 
-                src={talent.imageUrl} 
-                alt={talent.name} 
-                className="w-full h-full object-cover object-top" 
-              />
-              
-              {/* Purple glow on hover */}
-              <div className="absolute inset-0 bg-gradient-to-t from-purple-600/40 via-purple-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div key={`${talent.name}-${index}`} className="mx-4 flex-shrink-0 w-72 sm:w-80">
+                <div
+                className="relative aspect-[2/3] w-full cursor-pointer group rounded-2xl overflow-hidden transform hover:scale-105 transition-transform duration-300"
+                onClick={() => onTalentClick(talent)}
+                >
+                <img 
+                    src={talent.imageUrl} 
+                    alt={talent.name} 
+                    className="w-full h-full object-cover object-top" 
+                />
+                
+                {/* Purple glow on hover */}
+                <div className="absolute inset-0 bg-gradient-to-t from-purple-600/40 via-purple-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
-              {/* Ficha Técnica */}
-               <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent flex justify-between items-end">
-                  <div>
-                    <h3 className="text-xl font-bold text-white truncate [text-shadow:0_1px_2px_rgba(0,0,0,0.8)]">{talent.name}</h3>
-                    <div className="flex items-center mt-1 text-gray-200">
-                        {renderPlatformIcon(talent.platform)}
-                        <span className="text-sm [text-shadow:0_1px_2px_rgba(0,0,0,0.8)]">{talent.platform}</span>
+                {/* Ficha Técnica */}
+                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex justify-between items-end">
+                    <div>
+                        <h3 className="text-xl font-bold text-white truncate [text-shadow:0_1px_2px_rgba(0,0,0,0.8)]">{talent.name}</h3>
+                        <div className="flex items-center mt-1 text-gray-200">
+                            {renderPlatformIcon(talent.platform)}
+                            <span className="text-sm [text-shadow:0_1px_2px_rgba(0,0,0,0.8)]">{talent.platform}</span>
+                        </div>
                     </div>
-                  </div>
-                  <div className="text-sm text-purple-400 font-semibold">
-                    Ver momentos
-                  </div>
-              </div>
+                    <div className="text-sm text-purple-400 font-semibold">
+                        Ver momentos
+                    </div>
+                </div>
+                </div>
             </div>
           ))}
         </div>

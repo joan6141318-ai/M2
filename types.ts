@@ -17,4 +17,5 @@ export interface Talent {
     instagram?: string;
     tiktok?: string;
   };
+  isVerified?: boolean;
 }

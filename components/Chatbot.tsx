@@ -216,7 +216,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose }) => {
 
   return (
     <>
-      <div className="fixed bottom-6 right-6 w-full max-w-sm h-[60vh] bg-[#1C1B22]/80 backdrop-blur-lg rounded-2xl shadow-2xl flex flex-col text-white z-50 origin-bottom-right animate-chat-in border border-white/10">
+      <div className="fixed bottom-6 right-6 w-full max-w-sm h-[75vh] max-h-[650px] bg-[#1C1B22]/80 backdrop-blur-lg rounded-2xl shadow-2xl flex flex-col text-white z-50 origin-bottom-right animate-chat-in border border-white/10">
           <header className="bg-white/10 p-4 flex justify-between items-center rounded-t-2xl flex-shrink-0">
             <div className="flex items-center space-x-3">
               <div className="relative">

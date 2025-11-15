@@ -27,15 +27,15 @@ const Footer = React.forwardRef<HTMLElement, FooterProps>(({ onCTAClick }, ref) 
         <footer ref={ref} className="bg-[#0A090C] py-16 px-4">
             <div className="max-w-7xl mx-auto text-center text-gray-400">
                 <div className="flex justify-center space-x-6 mb-8">
-                    <a href="https://x.com/AgenciaMoon" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors" aria-label="Twitter">
+                    <div className="text-gray-600 cursor-default" aria-label="Twitter">
                         <TwitterIcon />
-                    </a>
-                    <a href="https://instagram.com/AgenciaMoon" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors" aria-label="Instagram">
+                    </div>
+                    <div className="text-gray-600 cursor-default" aria-label="Instagram">
                         <InstagramIcon />
-                    </a>
-                    <a href="https://tiktok.com/@AgenciaMoon" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors" aria-label="TikTok">
+                    </div>
+                    <div className="text-gray-600 cursor-default" aria-label="TikTok">
                         <TikTokIcon />
-                    </a>
+                    </div>
                 </div>
                 <div className="mb-4 space-x-4">
                     <a href="mailto:capacitamoon@gmail.com" className="hover:text-white transition-colors">

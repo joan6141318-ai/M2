@@ -19,7 +19,8 @@ const MenuIcon = () => (
 
 const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
   return (
-    <header className="absolute top-0 left-0 right-0 p-6 z-30 flex justify-end">
+    <header className="absolute top-0 left-0 right-0 p-6 z-30 flex justify-between items-center">
+      <img src="https://i.postimg.cc/MTgnpPcR/1763243765387.png" alt="Agency Moon Logo" className="h-8 w-auto" />
       <button onClick={onMenuClick} aria-label="Open menu">
         <MenuIcon />
       </button>

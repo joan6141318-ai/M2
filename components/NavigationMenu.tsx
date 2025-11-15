@@ -91,15 +91,15 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({ isOpen, onClose, navIte
             </nav>
             <div className="mt-auto p-6">
                 <div className="flex justify-center space-x-6">
-                    <a href="https://x.com/AgenciaMoon" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors" aria-label="Twitter">
+                    <div className="text-gray-600 cursor-default" aria-label="Twitter">
                         <TwitterIcon />
-                    </a>
-                    <a href="https://instagram.com/AgenciaMoon" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors" aria-label="Instagram">
+                    </div>
+                    <div className="text-gray-600 cursor-default" aria-label="Instagram">
                         <InstagramIcon />
-                    </a>
-                    <a href="https://tiktok.com/@AgenciaMoon" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors" aria-label="TikTok">
+                    </div>
+                    <div className="text-gray-600 cursor-default" aria-label="TikTok">
                         <TikTokIcon />
-                    </a>
+                    </div>
                 </div>
             </div>
         </div>

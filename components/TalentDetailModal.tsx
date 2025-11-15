@@ -146,9 +146,9 @@ const TalentDetailModal: React.FC<TalentDetailModalProps> = ({ isOpen, onClose, 
             </div>
             
             <div className="mt-auto pt-6 flex justify-start gap-4 flex-shrink-0">
-                {talent.socials.twitter && <a href={talent.socials.twitter} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white"><TwitterIcon /></a>}
-                {talent.socials.instagram && <a href={talent.socials.instagram} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white"><InstagramIcon /></a>}
-                {talent.socials.tiktok && <a href={talent.socials.tiktok} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white"><TikTokIcon /></a>}
+                {talent.socials.twitter && <div className="text-gray-600 cursor-default"><TwitterIcon /></div>}
+                {talent.socials.instagram && <div className="text-gray-600 cursor-default"><InstagramIcon /></div>}
+                {talent.socials.tiktok && <div className="text-gray-600 cursor-default"><TikTokIcon /></div>}
             </div>
         </div>
       </div>

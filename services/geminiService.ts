@@ -73,27 +73,33 @@ Los pagos se realizan dentro de la primera semana de cada mes y son en base a lo
 
 // Function to lazily initialize the AI client
 const getAi = (): GoogleGenAI | null => {
-  if (!process.env.API_KEY) {
-    console.error("Gemini API key not found in environment variables.");
+  try {
+    if (!process.env.API_KEY) {
+      console.error("Gemini API key not found in environment variables.");
+      return null;
+    }
+    if (ai) {
+      return ai;
+    }
+    ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    return ai;
+  } catch (e) {
+    console.error("Error initializing GoogleGenAI client:", e);
+    // Return null if initialization fails for any reason
     return null;
   }
-  if (ai) {
-    return ai;
-  }
-  ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-  return ai;
 }
 
 
 /**
  * Starts a new chat session. This resets any previous session.
- * @throws An error if the AI client cannot be initialized (e.g., missing API key).
+ * @throws An error if the AI client cannot be initialized (e.g., missing API key or invalid key).
  */
 export const startChat = () => {
     const aiInstance = getAi();
     if (!aiInstance) {
         chat = null;
-        throw new Error("La clave API de Gemini no está configurada.");
+        throw new Error("La clave API de Gemini no está configurada o es inválida.");
     }
     chat = aiInstance.chats.create({
         model: model,
@@ -110,7 +116,8 @@ export const startChat = () => {
  */
 export const getChatbotResponse = async (prompt: string): Promise<string> => {
   if (!chat) {
-    // This is a fallback in case startChat wasn't called from the component
+    // This is a fallback in case startChat wasn't called from the component, 
+    // though the UI flow should prevent this from being the primary initialization path.
     startChat();
   }
 
@@ -119,7 +126,7 @@ export const getChatbotResponse = async (prompt: string): Promise<string> => {
     return response.text;
   } catch (error) {
     console.error("Error calling Gemini API:", error);
-    // Reset chat on error to allow for a fresh start
+    // Reset chat on error to allow for a fresh start on next attempt
     chat = null;
     throw new Error("Failed to get response from AI model.");
   }

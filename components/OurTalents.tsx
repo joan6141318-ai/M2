@@ -36,7 +36,7 @@ const talents: Talent[] = [
     name: 'lbm0312',
     platform: 'Bigo Live',
     imageUrl: 'https://i.postimg.cc/rpn71VcF/In_Shot_20251107_185715214.jpg',
-    videoId: 'https://res.cloudinary.com/dskj7hk3c/video/upload/v1721092800/samples/elephants.mp4',
+    videoId: 'https://player.vimeo.com/video/1137304485',
     bio: '**Energética, positiva e inspiradora**\nÚnete a sus transmisiones de baile y música.\n\nRecord recaudación : 3 Millones\n\nPaís: Colombia',
     isVerified: true,
     socials: {

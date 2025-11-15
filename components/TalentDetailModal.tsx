@@ -99,13 +99,7 @@ const TalentDetailModal: React.FC<TalentDetailModalProps> = ({ isOpen, onClose, 
                     talent.videoId.includes('vimeo') ? (
                         <iframe
                             src={getVimeoSrc(talent.videoId)}
-                            className="absolute top-0"
-                            style={{
-                                left: '50%',
-                                transform: 'translateX(-50%)',
-                                width: '122%', // Cover the 9:19.5 container with a 9:16 video
-                                height: '100%',
-                            }}
+                            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-auto h-auto"
                             frameBorder="0"
                             allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
                             referrerPolicy="strict-origin-when-cross-origin"

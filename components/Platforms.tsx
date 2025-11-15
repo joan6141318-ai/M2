@@ -17,7 +17,7 @@ const Platforms = React.forwardRef<HTMLElement>((props, ref) => {
         <section ref={ref} className="py-20">
           <AnimatedSection>
             <div className="max-w-7xl mx-auto text-center">
-                <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-16">
+                <h2 className="text-5xl md:text-7xl font-extrabold tracking-tight text-white mb-16">
                     Nuestros <span className="text-purple-500">Socios</span>
                 </h2>
                 <div className="relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]">

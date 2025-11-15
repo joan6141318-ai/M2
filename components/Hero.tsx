@@ -9,7 +9,7 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(({ onCTAClick }, ref) => {
     <section ref={ref} className="h-screen flex items-center justify-center text-center px-4">
       {/* Background elements are now in App.tsx to create a parallax effect */}
       <div className="flex flex-col items-center">
-        <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-tight font-poppins">
+        <h1 className="text-[2.75rem] leading-tight sm:text-5xl md:text-7xl font-extrabold tracking-tight font-poppins">
           Conecta. Crea. <span className="text-purple-500">Brilla.</span>
         </h1>
         <p className="mt-4 text-lg md:text-xl text-gray-300 max-w-md">

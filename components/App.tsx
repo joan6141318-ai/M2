@@ -59,8 +59,8 @@ const App: React.FC = () => {
 
   return (
     <>
-      {/* Background container now scrolls with content */}
-      <div className="absolute inset-0 z-0">
+      {/* Background container for parallax effect */}
+      <div className="fixed inset-0 z-0">
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{ 

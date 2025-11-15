@@ -23,7 +23,7 @@ const talents: Talent[] = [
     name: 'steficupcake',
     platform: 'Bigo Live',
     imageUrl: 'https://i.postimg.cc/N0Z5jrFK/IMG_20251107_193051.jpg',
-    videoId: 'https://res.cloudinary.com/dskj7hk3c/video/upload/InShot_20240713_180424194_u2s7yl.mp4',
+    videoId: 'https://raw.githubusercontent.com/joan6141318-ai/Momentos/main/Momentos1.mp4',
     bio: '**Vibrante, carismática y llena de humor**\nNo te pierdas sus gameplays y charlas únicas.\n\nRecord recaudación : 2.5 Millones\n\nPaís: Colombia',
     isVerified: true,
     socials: {
@@ -62,7 +62,7 @@ const talents: Talent[] = [
     name: 'boanquita_',
     platform: 'Bigo Live',
     imageUrl: 'https://i.postimg.cc/R0Mtzmk6/IMG_20251107_183411.png',
-    videoId: 'https://res.cloudinary.com/dskj7hk3c/video/upload/v1721092800/samples/sea-turtle.mp4',
+    videoId: 'https://raw.githubusercontent.com/joan6141318-ai/Momentos/main/momentos1.mp4',
     bio: '**Dulce, alegre y divertida**\nNo te pierdas sus transmisiones todos los días\n\nRecord recaudación : 1.5 Millones\n\nPaís: Colombia',
     isVerified: true,
     socials: {

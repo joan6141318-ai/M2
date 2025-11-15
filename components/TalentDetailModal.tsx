@@ -68,6 +68,16 @@ const TalentDetailModal: React.FC<TalentDetailModalProps> = ({ isOpen, onClose, 
     })
     .filter((item): item is { key: string; value: string } => item !== null);
 
+  const getVimeoSrc = (videoId: string): string => {
+    // Optimized parameters for seamless, high-performance playback within the mockup.
+    // `background=1` removes chrome, `quality=540p` reduces bandwidth for smoother playback.
+    const params = 'background=1&autoplay=1&loop=1&muted=1&dnt=1&title=0&byline=0&portrait=0&badge=0&autopause=0&quality=540p';
+    
+    // Clean up base URL to ensure we add params correctly, avoiding duplicates.
+    const baseUrl = videoId.split('?')[0];
+    return `${baseUrl}?${params}`;
+  };
+
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={onClose}>
       <div 
@@ -81,11 +91,14 @@ const TalentDetailModal: React.FC<TalentDetailModalProps> = ({ isOpen, onClose, 
         {/* Left Side: All-Screen Phone Mockup */}
         <div className="w-2/5 flex items-center justify-center p-4 sm:p-8 bg-black/20">
           <div className="w-full max-w-[200px] sm:max-w-[280px] aspect-[9/19.5] bg-black border-2 border-gray-800 rounded-[1.5rem] sm:rounded-[2.25rem] p-1.5 shadow-2xl shadow-purple-900/50">
-              <div className="w-full h-full rounded-[1.4rem] sm:rounded-[2rem] overflow-hidden relative">
+              <div 
+                className="w-full h-full rounded-[1.4rem] sm:rounded-[2rem] overflow-hidden relative"
+                style={{ backgroundColor: 'black' }}
+              >
                   {talent.videoId ? (
                     talent.videoId.includes('vimeo') ? (
                         <iframe
-                            src={`${talent.videoId}&background=1&autoplay=1&loop=1&muted=1`}
+                            src={getVimeoSrc(talent.videoId)}
                             className="absolute top-0"
                             style={{
                                 left: '50%',

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AnimatedSection from './AnimatedSection';
 import type { Talent } from '../types';
 
@@ -17,6 +17,19 @@ const YouTubeIcon = () => (
 const PoppoLiveIcon = () => (
     <img src="https://i.postimg.cc/tTBYyRQm/1763094168746.png" alt="Poppo Live" className="h-5 w-auto mr-2" />
 );
+
+const ArrowLeftIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+    </svg>
+);
+
+const ArrowRightIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+    </svg>
+);
+
 
 const talents: Talent[] = [
   {
@@ -88,13 +101,28 @@ const renderPlatformIcon = (platform: Talent['platform']) => {
 };
 
 const OurTalents = React.forwardRef<HTMLElement, OurTalentsProps>(({ onTalentClick }, ref) => {
-  // Duplicate the array for a seamless loop
-  const duplicatedTalents = [...talents, ...talents];
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const handlePrev = () => {
+      setActiveIndex((prevIndex) => (prevIndex === 0 ? talents.length - 1 : prevIndex - 1));
+  };
+
+  const handleNext = () => {
+      setActiveIndex((prevIndex) => (prevIndex === talents.length - 1 ? 0 : prevIndex + 1));
+  };
+  
+  const handleCardClick = (index: number) => {
+      if (index === activeIndex) {
+          onTalentClick(talents[index]);
+      } else {
+          setActiveIndex(index);
+      }
+  };
 
   return (
-    <section ref={ref} className="py-20">
+    <section ref={ref} className="py-20 overflow-hidden">
       <AnimatedSection>
-        <div className="max-w-7xl mx-auto text-center">
+        <div className="max-w-7xl mx-auto text-center px-4">
           <h2 className="text-5xl md:text-7xl font-extrabold tracking-tight text-white">
             Nuestros <span className="text-purple-500">Talentos</span>
           </h2>
@@ -104,25 +132,71 @@ const OurTalents = React.forwardRef<HTMLElement, OurTalentsProps>(({ onTalentCli
         </div>
       </AnimatedSection>
       
-      <div className="mt-16 w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_10%,white_90%,transparent)]">
-        <div className="flex w-max animate-scroll">
-          {[...duplicatedTalents, ...duplicatedTalents].map((talent, index) => (
-            <div 
-              key={`${talent.name}-${index}`}
-              className="group relative rounded-2xl overflow-hidden cursor-pointer transform hover:-translate-y-2 transition-transform duration-300 w-72 h-96 flex-shrink-0 mx-4"
-              onClick={() => onTalentClick(talent)}
-            >
-              <img src={talent.imageUrl} alt={talent.name} className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-500" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-              <div className="absolute bottom-0 left-0 p-4 w-full">
-                <h3 className="text-xl font-bold text-white truncate">{talent.name}</h3>
-                <div className="flex items-center mt-1 text-white">
-                  {renderPlatformIcon(talent.platform)}
-                  <span className="ml-1 text-sm">{talent.platform}</span>
-                </div>
-              </div>
-            </div>
-          ))}
+      <div className="mt-16 relative h-[500px] flex items-center justify-center">
+        {/* Navigation Buttons */}
+        <button 
+            onClick={handlePrev} 
+            className="absolute left-4 sm:left-8 md:left-16 top-1/2 -translate-y-1/2 z-20 p-3 bg-white/10 rounded-full hover:bg-white/20 transition-colors text-white"
+            aria-label="Previous talent"
+        >
+            <ArrowLeftIcon />
+        </button>
+        <button 
+            onClick={handleNext} 
+            className="absolute right-4 sm:right-8 md:right-16 top-1/2 -translate-y-1/2 z-20 p-3 bg-white/10 rounded-full hover:bg-white/20 transition-colors text-white"
+            aria-label="Next talent"
+        >
+            <ArrowRightIcon />
+        </button>
+        
+        {/* Carousel */}
+        <div className="relative w-full h-full [perspective:1000px]">
+            {talents.map((talent, index) => {
+                const offset = index - activeIndex;
+                const isVisible = Math.abs(offset) <= 2; // Only render the active, previous, next, and the ones after that.
+
+                const style = {
+                    transform: `
+                        translateX(${offset * 35}%) 
+                        scale(${1 - Math.abs(offset) * 0.2}) 
+                        translateZ(${-Math.abs(offset) * 100}px)
+                        rotateY(${offset * -10}deg)
+                    `,
+                    zIndex: talents.length - Math.abs(offset),
+                    opacity: isVisible ? (Math.abs(offset) > 1 ? 0.3 : 1) : 0,
+                    filter: Math.abs(offset) > 0 ? 'blur(4px)' : 'none',
+                    transition: 'all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                    visibility: isVisible ? 'visible' : 'hidden',
+                };
+
+                const isCenter = index === activeIndex;
+
+                return (
+                    <div
+                        key={talent.name}
+                        className="absolute top-0 left-0 w-full h-full flex items-center justify-center"
+                    >
+                        <div
+                            style={style}
+                            className={`relative w-72 h-96 rounded-2xl overflow-hidden cursor-pointer shadow-lg ${isCenter ? 'shadow-purple-500/50' : ''}`}
+                            onClick={() => handleCardClick(index)}
+                        >
+                            <img src={talent.imageUrl} alt={talent.name} className="w-full h-full object-cover object-top" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                            <div className="absolute bottom-0 left-0 p-4 w-full">
+                                <h3 className="text-xl font-bold text-white truncate">{talent.name}</h3>
+                                <div className="flex items-center mt-1 text-white">
+                                    {renderPlatformIcon(talent.platform)}
+                                    <span className="ml-1 text-sm">{talent.platform}</span>
+                                </div>
+                            </div>
+                            {isCenter && (
+                                <div className="absolute inset-0 border-2 border-purple-500 rounded-2xl animate-pulse-glow pointer-events-none"></div>
+                            )}
+                        </div>
+                    </div>
+                );
+            })}
         </div>
       </div>
     </section>

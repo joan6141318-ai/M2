@@ -8,7 +8,7 @@ export interface Message {
 
 export interface Talent {
   name: string;
-  platform: 'Twitch' | 'YouTube' | 'Poppo Live';
+  platform: 'Twitch' | 'YouTube' | 'Bigo Live';
   imageUrl: string;
   videoId: string;
   bio: string;

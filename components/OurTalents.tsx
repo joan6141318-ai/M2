@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import AnimatedSection from './AnimatedSection';
 import type { Talent } from '../types';
 
@@ -14,27 +14,14 @@ const YouTubeIcon = () => (
     </svg>
 );
 
-const PoppoLiveIcon = () => (
-    <img src="https://i.postimg.cc/tTBYyRQm/1763094168746.png" alt="Poppo Live" className="h-5 w-auto mr-2" />
+const BigoLiveIcon = () => (
+    <img src="https://i.postimg.cc/DyHHxDjx/bigo-live-seeklogo.png" alt="Bigo Live logo" className="h-5 w-5 mr-1.5" />
 );
-
-const ArrowLeftIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-    </svg>
-);
-
-const ArrowRightIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-    </svg>
-);
-
 
 const talents: Talent[] = [
   {
     name: 'steficupcake',
-    platform: 'Poppo Live',
+    platform: 'Bigo Live',
     imageUrl: 'https://i.postimg.cc/N0Z5jrFK/IMG_20251107_193051.jpg',
     videoId: 'https://res.cloudinary.com/dskj7hk3c/video/upload/InShot_20240713_180424194_u2s7yl.mp4',
     bio: 'Stefi es una creadora de contenido vibrante y carismática que se especializa en gameplays llenos de humor y sesiones de "Just Chatting" donde conecta con su comunidad de una manera única y auténtica.',
@@ -45,11 +32,11 @@ const talents: Talent[] = [
     },
   },
   {
-    name: 'El Mariana',
-    platform: 'Twitch',
-    imageUrl: 'https://i.postimg.cc/sX0pQyFh/el-mariana.jpg',
+    name: 'lbm0312',
+    platform: 'Bigo Live',
+    imageUrl: 'https://i.postimg.cc/rpn71VcF/In_Shot_20251107_185715214.jpg',
     videoId: 'https://res.cloudinary.com/dskj7hk3c/video/upload/v1721092800/samples/elephants.mp4',
-    bio: 'El Mariana es uno de los streamers más grandes de Latinoamérica, conocido por su humor irreverente, su carisma y su habilidad para conectar con la audiencia en juegos de todo tipo.',
+    bio: 'Valeria ilumina cada transmisión con su energía positiva. Su contenido se centra en el baile, la música y conversaciones inspiradoras con sus seguidores.',
     socials: {
       twitter: '#',
       instagram: '#',
@@ -57,11 +44,11 @@ const talents: Talent[] = [
     },
   },
   {
-    name: 'AriGameplays',
-    platform: 'Twitch',
-    imageUrl: 'https://i.postimg.cc/VLx6XF0B/arigameplays.jpg',
+    name: 'Seli_105',
+    platform: 'Bigo Live',
+    imageUrl: 'https://i.postimg.cc/Dw1kLCZ3/IMG_20251113_221309.jpg',
     videoId: 'https://res.cloudinary.com/dskj7hk3c/video/upload/v1721092800/samples/caminandes.mp4',
-    bio: 'Abril "Ari" Garza es una de las streamers más influyentes, destacando en una variedad de juegos y contenido IRL. Su energía y conexión con su comunidad la han convertido en un ícono del streaming.',
+    bio: 'Conocida por su estilo único y su creatividad, Luna explora el arte y el diseño en vivo, compartiendo su proceso y creando una comunidad de artistas.',
     socials: {
         twitter: '#',
         instagram: '#',
@@ -69,11 +56,11 @@ const talents: Talent[] = [
     },
   },
   {
-    name: 'JuanSGuarnizo',
-    platform: 'YouTube',
-    imageUrl: 'https://i.postimg.cc/9Q2YVp6C/juansguarnizo.jpg',
+    name: 'boanquita_',
+    platform: 'Bigo Live',
+    imageUrl: 'https://i.postimg.cc/R0Mtzmk6/IMG_20251107_183411.png',
     videoId: 'https://res.cloudinary.com/dskj7hk3c/video/upload/v1721092800/samples/sea-turtle.mp4',
-    bio: 'Juan es un creador de contenido colombiano que ha conquistado Twitch con su versatilidad, participando en series de roleplay, jugando títulos de alta competencia y creando momentos inolvidables.',
+    bio: 'Sofia combina su pasión por los videojuegos de aventura con su amor por la narración, creando experiencias inmersivas y emocionantes para su audiencia.',
     socials: {
         twitter: '#',
         instagram: '#',
@@ -93,34 +80,19 @@ const renderPlatformIcon = (platform: Talent['platform']) => {
         return <TwitchIcon />;
       case 'YouTube':
         return <YouTubeIcon />;
-      case 'Poppo Live':
-        return <PoppoLiveIcon />;
+      case 'Bigo Live':
+        return <BigoLiveIcon />;
       default:
         return null;
     }
 };
 
 const OurTalents = React.forwardRef<HTMLElement, OurTalentsProps>(({ onTalentClick }, ref) => {
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const handlePrev = () => {
-      setActiveIndex((prevIndex) => (prevIndex === 0 ? talents.length - 1 : prevIndex - 1));
-  };
-
-  const handleNext = () => {
-      setActiveIndex((prevIndex) => (prevIndex === talents.length - 1 ? 0 : prevIndex + 1));
-  };
-  
-  const handleCardClick = (index: number) => {
-      if (index === activeIndex) {
-          onTalentClick(talents[index]);
-      } else {
-          setActiveIndex(index);
-      }
-  };
+  // Duplicate talents for a seamless loop
+  const duplicatedTalents = [...talents, ...talents];
 
   return (
-    <section ref={ref} className="py-20 overflow-hidden">
+    <section ref={ref} className="py-20 md:py-28 overflow-hidden">
       <AnimatedSection>
         <div className="max-w-7xl mx-auto text-center px-4">
           <h2 className="text-5xl md:text-7xl font-extrabold tracking-tight text-white">
@@ -132,71 +104,42 @@ const OurTalents = React.forwardRef<HTMLElement, OurTalentsProps>(({ onTalentCli
         </div>
       </AnimatedSection>
       
-      <div className="mt-16 relative h-[500px] flex items-center justify-center">
-        {/* Navigation Buttons */}
-        <button 
-            onClick={handlePrev} 
-            className="absolute left-4 sm:left-8 md:left-16 top-1/2 -translate-y-1/2 z-20 p-3 bg-white/10 rounded-full hover:bg-white/20 transition-colors text-white"
-            aria-label="Previous talent"
+      <div 
+        className="mt-16 w-full relative [mask-image:linear-gradient(to_right,transparent,white_5%,white_95%,transparent)]"
+      >
+        <div 
+          className="flex gap-8 px-4 animate-scroll-slow hover:[animation-play-state:paused]"
         >
-            <ArrowLeftIcon />
-        </button>
-        <button 
-            onClick={handleNext} 
-            className="absolute right-4 sm:right-8 md:right-16 top-1/2 -translate-y-1/2 z-20 p-3 bg-white/10 rounded-full hover:bg-white/20 transition-colors text-white"
-            aria-label="Next talent"
-        >
-            <ArrowRightIcon />
-        </button>
-        
-        {/* Carousel */}
-        <div className="relative w-full h-full [perspective:1000px]">
-            {talents.map((talent, index) => {
-                const offset = index - activeIndex;
-                const isVisible = Math.abs(offset) <= 2; // Only render the active, previous, next, and the ones after that.
+          {duplicatedTalents.map((talent, index) => (
+            <div
+              key={`${talent.name}-${index}`}
+              className="relative w-64 h-96 sm:w-72 sm:h-[28rem] flex-shrink-0 cursor-pointer group rounded-2xl overflow-hidden"
+              onClick={() => onTalentClick(talent)}
+            >
+              <img 
+                src={talent.imageUrl} 
+                alt={talent.name} 
+                className="w-full h-full object-cover object-top" 
+              />
+              
+              {/* Purple glow on hover */}
+              <div className="absolute inset-0 bg-gradient-to-t from-purple-600/40 via-purple-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
-                const style = {
-                    transform: `
-                        translateX(${offset * 35}%) 
-                        scale(${1 - Math.abs(offset) * 0.2}) 
-                        translateZ(${-Math.abs(offset) * 100}px)
-                        rotateY(${offset * -10}deg)
-                    `,
-                    zIndex: talents.length - Math.abs(offset),
-                    opacity: isVisible ? (Math.abs(offset) > 1 ? 0.3 : 1) : 0,
-                    filter: Math.abs(offset) > 0 ? 'blur(4px)' : 'none',
-                    transition: 'all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                    visibility: isVisible ? 'visible' : 'hidden',
-                };
-
-                const isCenter = index === activeIndex;
-
-                return (
-                    <div
-                        key={talent.name}
-                        className="absolute top-0 left-0 w-full h-full flex items-center justify-center"
-                    >
-                        <div
-                            style={style}
-                            className={`relative w-72 h-96 rounded-2xl overflow-hidden cursor-pointer shadow-lg ${isCenter ? 'shadow-purple-500/50' : ''}`}
-                            onClick={() => handleCardClick(index)}
-                        >
-                            <img src={talent.imageUrl} alt={talent.name} className="w-full h-full object-cover object-top" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-                            <div className="absolute bottom-0 left-0 p-4 w-full">
-                                <h3 className="text-xl font-bold text-white truncate">{talent.name}</h3>
-                                <div className="flex items-center mt-1 text-white">
-                                    {renderPlatformIcon(talent.platform)}
-                                    <span className="ml-1 text-sm">{talent.platform}</span>
-                                </div>
-                            </div>
-                            {isCenter && (
-                                <div className="absolute inset-0 border-2 border-purple-500 rounded-2xl animate-pulse-glow pointer-events-none"></div>
-                            )}
-                        </div>
+              {/* Ficha Técnica */}
+               <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent flex justify-between items-end">
+                  <div>
+                    <h3 className="text-xl font-bold text-white truncate [text-shadow:0_1px_2px_rgba(0,0,0,0.8)]">{talent.name}</h3>
+                    <div className="flex items-center mt-1 text-gray-200">
+                        {renderPlatformIcon(talent.platform)}
+                        <span className="text-sm [text-shadow:0_1px_2px_rgba(0,0,0,0.8)]">{talent.platform}</span>
                     </div>
-                );
-            })}
+                  </div>
+                  <div className="text-sm text-purple-400 font-semibold">
+                    Ver momentos
+                  </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

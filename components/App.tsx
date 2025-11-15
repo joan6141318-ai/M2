@@ -86,14 +86,14 @@ const App: React.FC = () => {
       <div className="fixed inset-0 z-0">
         {/* Default Background */}
         <div
-          className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${isAboutUsVisible ? 'opacity-0' : 'opacity-100'}`}
+          className={`absolute inset-0 bg-cover bg-center bg-fixed transition-opacity duration-1000 ${isAboutUsVisible ? 'opacity-0' : 'opacity-100'}`}
           style={{ 
             backgroundImage: "url('https://i.postimg.cc/hv5fbmt0/IMG_20251111_053352.jpg?v=1')"
           }}
         />
         {/* "About Us" Section Background */}
         <div
-          className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${isAboutUsVisible ? 'opacity-100' : 'opacity-0'}`}
+          className={`absolute inset-0 bg-cover bg-center bg-fixed transition-opacity duration-1000 ${isAboutUsVisible ? 'opacity-100' : 'opacity-0'}`}
           style={{ 
             backgroundImage: "url('https://i.postimg.cc/wjCYZC12/photo_1616589676_62b3bd4ff6d2.jpg')"
           }}

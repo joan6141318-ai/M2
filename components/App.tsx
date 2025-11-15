@@ -59,10 +59,10 @@ const App: React.FC = () => {
 
   return (
     <>
-      {/* Background container with new image */}
-      <div className="fixed inset-0 z-0">
+      {/* Background container now scrolls with content */}
+      <div className="absolute inset-0 z-0">
         <div
-          className="absolute inset-0 bg-cover bg-center bg-fixed"
+          className="absolute inset-0 bg-cover bg-center"
           style={{ 
             backgroundImage: "url('https://i.postimg.cc/hv5fbmt0/IMG_20251111_053352.jpg?v=1')"
           }}

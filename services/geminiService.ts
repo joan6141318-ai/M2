@@ -76,6 +76,7 @@ Los pagos se realizan dentro de la primera semana de cada mes y son en base a lo
  * @returns boolean - True if API_KEY is set, false otherwise.
  */
 export const isApiAvailable = (): boolean => {
+    // FIX: Switched from Vite-specific import.meta.env to process.env per coding guidelines.
     return !!process.env.API_KEY;
 };
 
@@ -86,9 +87,11 @@ const getAi = (): GoogleGenAI => {
   }
   if (!isApiAvailable()) {
     // This should ideally not be hit if the UI checks first, but it's a safeguard.
+    // FIX: Updated error message to reflect the change to process.env.API_KEY.
     throw new Error("API_KEY environment variable not set.");
   }
   // The API key is guaranteed to be a string here due to the check above
+  // FIX: Switched from Vite-specific import.meta.env to process.env per coding guidelines.
   ai = new GoogleGenAI({ apiKey: process.env.API_KEY! });
   return ai;
 }

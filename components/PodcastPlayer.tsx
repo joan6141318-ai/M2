@@ -212,8 +212,8 @@ const PodcastPlayer: React.FC<PodcastPlayerProps> = ({ isOpen, onClose }) => {
         <div className="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between">
             <p className="text-gray-400 text-sm mb-4 sm:mb-0">Escúchalo en tu plataforma favorita:</p>
             <div className="flex space-x-4">
-                <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors"><SpotifyIcon /> <span>Spotify</span></a>
-                <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors"><ApplePodcastsIcon /> <span>Apple Podcasts</span></a>
+                <a href="https://open.spotify.com/search/El%20Futuro%20del%20Streaming" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors"><SpotifyIcon /> <span>Spotify</span></a>
+                <a href="https://podcasts.apple.com/us/search?term=El%20Futuro%20del%20Streaming" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors"><ApplePodcastsIcon /> <span>Apple Podcasts</span></a>
             </div>
         </div>
 

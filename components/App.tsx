@@ -1,4 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+
+
+import React, { useState, useRef } from 'react';
 import Header from './Header';
 import Hero from './Hero';
 import AboutUs from './AboutUs';
@@ -26,7 +28,6 @@ const App: React.FC = () => {
   const [isTalentModalOpen, setIsTalentModalOpen] = useState(false);
   const [selectedTalent, setSelectedTalent] = useState<Talent | null>(null);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
-  const [bgOpacity, setBgOpacity] = useState(1);
 
   const heroRef = useRef<HTMLElement>(null);
   const aboutUsRef = useRef<HTMLElement>(null);
@@ -38,23 +39,6 @@ const App: React.FC = () => {
   const footerRef = useRef<HTMLElement>(null);
   
   const apiAvailable = isApiAvailable();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const heroHeight = heroRef.current?.offsetHeight || window.innerHeight;
-      const scrollY = window.scrollY;
-      const fadeEnd = heroHeight / 2;
-      
-      if (scrollY < fadeEnd) {
-        setBgOpacity(1 - (scrollY / fadeEnd));
-      } else {
-        setBgOpacity(0);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
   
   const handleTalentClick = (talent: Talent) => {
     setSelectedTalent(talent);
@@ -78,18 +62,20 @@ const App: React.FC = () => {
 
   return (
     <>
-      {/* Reverted background container with original transition effect */}
+      {/* API Key availability check */}
+      {!apiAvailable && (
+        <div className="fixed bottom-4 left-4 z-[9999] bg-red-800 text-white p-3 rounded-lg shadow-lg text-sm border border-red-600 animate-fade-in-up">
+            <strong className="font-bold">Advertencia:</strong> La clave API no está configurada. El chatbot no estará disponible.
+        </div>
+      )}
+
+      {/* Background container with new image */}
       <div className="fixed inset-0 z-0">
         <div
-          className="absolute inset-0 bg-cover bg-center bg-fixed transition-opacity duration-1000"
-          style={{ 
-            backgroundImage: "url('https://i.postimg.cc/pX0CoGgP/girl-streamer-bg.jpg')",
-            opacity: bgOpacity 
-          }}
-        />
-        <div
           className="absolute inset-0 bg-cover bg-center bg-fixed"
-          style={{ backgroundImage: "url('https://i.postimg.cc/3w7pXz7g/nebula-bg.jpg')" }}
+          style={{ 
+            backgroundImage: "url('https://i.postimg.cc/hv5fbmt0/IMG_20251111_053352.jpg?v=1')"
+          }}
         />
         <div className="absolute inset-0 bg-black/50" />
       </div>
@@ -108,7 +94,7 @@ const App: React.FC = () => {
           <FAQ ref={faqRef} onOpenPaymentModal={() => setIsPaymentModalOpen(true)} />
         </main>
 
-        <Footer ref={footerRef} />
+        <Footer ref={footerRef} onCTAClick={() => setIsFormOpen(true)} />
       </div>
 
       {/* Overlays and Modals */}

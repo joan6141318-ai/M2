@@ -18,30 +18,33 @@ const TikTokIcon = () => (
     </svg>
 );
 
+interface FooterProps {
+    onCTAClick: () => void;
+}
 
-const Footer = React.forwardRef<HTMLElement>((props, ref) => {
+const Footer = React.forwardRef<HTMLElement, FooterProps>(({ onCTAClick }, ref) => {
     return (
         <footer ref={ref} className="bg-[#0A090C] py-16 px-4">
             <div className="max-w-7xl mx-auto text-center text-gray-400">
                 <div className="flex justify-center space-x-6 mb-8">
-                    <span className="text-gray-400" aria-label="Twitter">
+                    <a href="https://x.com/AgenciaMoon" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors" aria-label="Twitter">
                         <TwitterIcon />
-                    </span>
-                    <span className="text-gray-400" aria-label="Instagram">
+                    </a>
+                    <a href="https://instagram.com/AgenciaMoon" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors" aria-label="Instagram">
                         <InstagramIcon />
-                    </span>
-                    <span className="text-gray-400" aria-label="TikTok">
+                    </a>
+                    <a href="https://tiktok.com/@AgenciaMoon" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors" aria-label="TikTok">
                         <TikTokIcon />
-                    </span>
+                    </a>
                 </div>
                 <div className="mb-4 space-x-4">
                     <a href="mailto:capacitamoon@gmail.com" className="hover:text-white transition-colors">
                         capacitamoon@gmail.com
                     </a>
                      <span className="text-gray-600">|</span>
-                    <a href="#" className="hover:text-white transition-colors">
+                    <button onClick={onCTAClick} className="hover:text-white transition-colors">
                         Trabaja con nosotros
-                    </a>
+                    </button>
                 </div>
                 <div>
                     <p className="text-sm">

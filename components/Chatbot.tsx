@@ -84,6 +84,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const lunaAvatar = "https://i.postimg.cc/1fn8L8N1/IMG_20251107_163305.png";
 
@@ -95,28 +96,35 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose }) => {
     scrollToBottom();
   }, [messages, isLoading]);
 
-  // Effect to reset the chat and show staged welcome messages when it opens
   useEffect(() => {
     let timer: number;
     if (isOpen) {
-      startChat(); // Creates a new chat session in the service
-      
-      // Set the very first message immediately
-      setMessages([
-        { role: 'model', text: 'Hola gracias por comunicarte a Agencia Moon en breve uno de nuestros asesores te responderá' }
-      ]);
+      setError(null); // Clear previous errors
+      try {
+        startChat(); // Creates a new chat session in the service
+        
+        // Set the very first message immediately
+        setMessages([
+          { role: 'model', text: 'Hola gracias por comunicarte a Agencia Moon en breve uno de nuestros asesores te responderá' }
+        ]);
 
-      // After 4 seconds, add Luna's introduction
-      timer = window.setTimeout(() => {
-        const lunaMessage: Message = { 
-            role: 'model', 
-            text: 'Hola mi nombre es Luna asesor oficial de Agencia Moon estoy aquí para ayudarte con todas tus dudas el día de hoy. Me podrías decir tu nombre por favor?' 
-        };
-        setMessages(prev => [...prev, lunaMessage]);
-      }, 4000);
+        // After 4 seconds, add Luna's introduction
+        timer = window.setTimeout(() => {
+          const lunaMessage: Message = { 
+              role: 'model', 
+              text: 'Hola mi nombre es Luna asesor oficial de Agencia Moon estoy aquí para ayudarte con todas tus dudas el día de hoy. Me podrías decir tu nombre por favor?' 
+          };
+          setMessages(prev => [...prev, lunaMessage]);
+        }, 4000);
+      } catch (e) {
+          console.error("Failed to start chat:", e);
+          const errorMessage = e instanceof Error ? e.message : 'Ocurrió un error desconocido.';
+          setError(`El chatbot no está disponible. Causa: ${errorMessage}`);
+          setMessages([]); // Ensure no messages are shown on error
+      }
     }
 
-    // Cleanup function to clear the timeout if the chat is closed before 4 seconds
+    // Cleanup function
     return () => {
       if (timer) {
         clearTimeout(timer);
@@ -217,8 +225,11 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose }) => {
               </div>
               <div>
                 <h2 className="font-bold text-lg">Luna</h2>
-                {isLoading && (
+                {isLoading && !error && (
                   <p className="text-xs text-purple-300 animate-pulse">está escribiendo...</p>
+                )}
+                {error && (
+                  <p className="text-xs text-red-400">Desconectado</p>
                 )}
               </div>
             </div>
@@ -228,85 +239,96 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose }) => {
           </header>
 
           <div className="flex-1 p-4 overflow-y-auto space-y-4">
-              {messages.map((msg, index) => (
-                <div key={index} className={`flex items-start gap-3 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  {msg.role === 'model' && (
-                      <img src={lunaAvatar} alt="Luna Avatar" className="w-8 h-8 rounded-full flex-shrink-0" />
-                  )}
-
-                  {msg.benefitsList ? (
-                    <div className="w-full max-w-xs md:max-w-sm">
-                      <div className="bg-black/40 backdrop-blur-md rounded-2xl p-4 border border-white/10 space-y-4">
-                        <p className="text-sm text-gray-200 px-1 font-semibold">{msg.text}</p>
-                        {msg.benefitsList.map((benefit, bIndex) => {
-                          const Icon = benefitIcons[benefit.title] || MonetizationIcon;
-                          return (
-                            <div key={bIndex} className="flex items-start space-x-4 text-left">
-                              <div className="flex-shrink-0 pt-1">
-                                <Icon />
-                              </div>
-                              <div>
-                                <h4 className="text-md font-semibold text-white">{benefit.title}</h4>
-                                <p className="text-gray-400 text-sm mt-1">{benefit.description}</p>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
+              {error ? (
+                  <div className="flex items-center justify-center h-full text-center">
+                    <div className="bg-red-900/50 border border-red-500/50 text-red-300 rounded-lg p-4 max-w-xs">
+                      <h3 className="font-bold text-lg text-white">Error de Conexión</h3>
+                      <p className="mt-2 text-sm">{error}</p>
                     </div>
-                  ) : msg.isPaymentTable ? (
-                      <div className="w-full max-w-xs md:max-w-sm">
-                          <div className="bg-black/40 backdrop-blur-md rounded-2xl p-3 border border-white/10">
-                              <p className="text-sm text-gray-200 mb-2 px-1">{msg.text}</p>
-                              <img 
-                                  src="https://i.postimg.cc/8zccpBdH/NIVEL_20251030_155750_0001.png" 
-                                  alt="Tabla de Pagos" 
-                                  className="rounded-lg w-full h-auto cursor-pointer"
-                                  onClick={() => setIsImageModalOpen(true)}
-                              />
-                              <div className="flex justify-end items-center space-x-2 mt-3">
-                                  <button 
+                  </div>
+              ) : (
+                <>
+                  {messages.map((msg, index) => (
+                    <div key={index} className={`flex items-start gap-3 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                      {msg.role === 'model' && (
+                          <img src={lunaAvatar} alt="Luna Avatar" className="w-8 h-8 rounded-full flex-shrink-0" />
+                      )}
+
+                      {msg.benefitsList ? (
+                        <div className="w-full max-w-xs md:max-w-sm">
+                          <div className="bg-black/40 backdrop-blur-md rounded-2xl p-4 border border-white/10 space-y-4">
+                            <p className="text-sm text-gray-200 px-1 font-semibold">{msg.text}</p>
+                            {msg.benefitsList.map((benefit, bIndex) => {
+                              const Icon = benefitIcons[benefit.title] || MonetizationIcon;
+                              return (
+                                <div key={bIndex} className="flex items-start space-x-4 text-left">
+                                  <div className="flex-shrink-0 pt-1">
+                                    <Icon />
+                                  </div>
+                                  <div>
+                                    <h4 className="text-md font-semibold text-white">{benefit.title}</h4>
+                                    <p className="text-gray-400 text-sm mt-1">{benefit.description}</p>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      ) : msg.isPaymentTable ? (
+                          <div className="w-full max-w-xs md:max-w-sm">
+                              <div className="bg-black/40 backdrop-blur-md rounded-2xl p-3 border border-white/10">
+                                  <p className="text-sm text-gray-200 mb-2 px-1">{msg.text}</p>
+                                  <img 
+                                      src="https://i.postimg.cc/8zccpBdH/NIVEL_20251030_155750_0001.png" 
+                                      alt="Tabla de Pagos" 
+                                      className="rounded-lg w-full h-auto cursor-pointer"
                                       onClick={() => setIsImageModalOpen(true)}
-                                      className="px-4 py-1.5 bg-gray-700 text-white text-xs font-semibold rounded-full hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#1C1B22] focus:ring-purple-500 transition-colors"
-                                  >
-                                      Ver
-                                  </button>
-                                  <button
-                                      onClick={handleDownload}
-                                      disabled={isDownloading}
-                                      className="px-4 py-1.5 bg-gray-700 text-white text-xs font-semibold rounded-full hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#1C1B22] focus:ring-purple-500 transition-colors disabled:bg-gray-500 disabled:opacity-70 disabled:cursor-wait"
-                                  >
-                                      {isDownloading ? 'Descargando...' : 'Descargar'}
-                                  </button>
+                                  />
+                                  <div className="flex justify-end items-center space-x-2 mt-3">
+                                      <button 
+                                          onClick={() => setIsImageModalOpen(true)}
+                                          className="px-4 py-1.5 bg-gray-700 text-white text-xs font-semibold rounded-full hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#1C1B22] focus:ring-purple-500 transition-colors"
+                                      >
+                                          Ver
+                                      </button>
+                                      <button
+                                          onClick={handleDownload}
+                                          disabled={isDownloading}
+                                          className="px-4 py-1.5 bg-gray-700 text-white text-xs font-semibold rounded-full hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#1C1B22] focus:ring-purple-500 transition-colors disabled:bg-gray-500 disabled:opacity-70 disabled:cursor-wait"
+                                      >
+                                          {isDownloading ? 'Descargando...' : 'Descargar'}
+                                      </button>
+                                  </div>
                               </div>
                           </div>
-                      </div>
-                  ) : msg.isContactCard ? (
-                    <div className="w-full max-w-xs md:max-w-sm">
-                        <div className="bg-black/40 backdrop-blur-md rounded-2xl p-3 border border-white/10">
-                            <p className="text-sm text-gray-200 mb-2 px-1">{msg.text}</p>
-                            <a 
-                              href="https://wa.me/528118807625" 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              className="bg-gray-800/50 hover:bg-gray-700/70 transition-colors duration-300 rounded-lg p-3 flex items-center space-x-3"
-                            >
-                              <WhatsAppIcon />
-                              <div className="text-left">
-                                <span className="font-semibold text-white block">Contacto Directo</span>
-                                <span className="text-gray-300 text-sm">+52 8118807625</span>
-                              </div>
-                            </a>
+                      ) : msg.isContactCard ? (
+                        <div className="w-full max-w-xs md:max-w-sm">
+                            <div className="bg-black/40 backdrop-blur-md rounded-2xl p-3 border border-white/10">
+                                <p className="text-sm text-gray-200 mb-2 px-1">{msg.text}</p>
+                                <a 
+                                  href="https://wa.me/528118807625" 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="bg-gray-800/50 hover:bg-gray-700/70 transition-colors duration-300 rounded-lg p-3 flex items-center space-x-3"
+                                >
+                                  <WhatsAppIcon />
+                                  <div className="text-left">
+                                    <span className="font-semibold text-white block">Contacto Directo</span>
+                                    <span className="text-gray-300 text-sm">+52 8118807625</span>
+                                  </div>
+                                </a>
+                            </div>
                         </div>
+                      ) : (
+                          <div className={`max-w-xs md:max-w-sm px-4 py-2 rounded-2xl ${msg.role === 'user' ? 'bg-purple-600 text-white' : 'bg-gray-700 text-gray-200'}`}>
+                              <FormattedText text={msg.text} />
+                          </div>
+                      )}
                     </div>
-                  ) : (
-                      <div className={`max-w-xs md:max-w-sm px-4 py-2 rounded-2xl ${msg.role === 'user' ? 'bg-purple-600 text-white' : 'bg-gray-700 text-gray-200'}`}>
-                          <FormattedText text={msg.text} />
-                      </div>
-                  )}
-                </div>
-              ))}
-              <div ref={messagesEndRef} />
+                  ))}
+                  <div ref={messagesEndRef} />
+                </>
+              )}
           </div>
 
           <div className="p-4 border-t border-white/10">
@@ -316,11 +338,11 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose }) => {
                       value={input}
                       onChange={(e) => setInput(e.target.value)}
                       onKeyPress={handleKeyPress}
-                      placeholder="Pregúntame lo que sea..."
+                      placeholder={error ? "Chat no disponible" : "Pregúntame lo que sea..."}
                       className="flex-1 bg-transparent p-3 text-white placeholder-gray-400 focus:outline-none"
-                      disabled={isLoading}
+                      disabled={isLoading || !!error}
                   />
-                  <button onClick={handleSend} disabled={isLoading || !input.trim()} className="p-2 text-white bg-purple-600 rounded-full hover:bg-purple-700 disabled:bg-gray-500 disabled:cursor-not-allowed transition-colors">
+                  <button onClick={handleSend} disabled={isLoading || !input.trim() || !!error} className="p-2 text-white bg-purple-600 rounded-full hover:bg-purple-700 disabled:bg-gray-500 disabled:cursor-not-allowed transition-colors">
                       <SendIcon />
                   </button>
               </div>

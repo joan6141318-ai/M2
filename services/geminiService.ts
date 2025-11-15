@@ -71,37 +71,30 @@ Los pagos se realizan dentro de la primera semana de cada mes y son en base a lo
 15. **Formato de Énfasis**: Cuando quieras enfatizar una parte importante de tu respuesta, enciérrala entre dobles asteriscos. La interfaz lo mostrará en negrita. Por ejemplo: "Tus ganancias son **100% para ti**."
 `;
 
-/**
- * Checks if the API key is available in the environment variables.
- * @returns boolean - True if API_KEY is set, false otherwise.
- */
-export const isApiAvailable = (): boolean => {
-    // FIX: Switched from Vite-specific import.meta.env to process.env per coding guidelines.
-    return !!process.env.API_KEY;
-};
-
 // Function to lazily initialize the AI client
-const getAi = (): GoogleGenAI => {
+const getAi = (): GoogleGenAI | null => {
+  if (!process.env.API_KEY) {
+    console.error("Gemini API key not found in environment variables.");
+    return null;
+  }
   if (ai) {
     return ai;
   }
-  if (!isApiAvailable()) {
-    // This should ideally not be hit if the UI checks first, but it's a safeguard.
-    // FIX: Updated error message to reflect the change to process.env.API_KEY.
-    throw new Error("API_KEY environment variable not set.");
-  }
-  // The API key is guaranteed to be a string here due to the check above
-  // FIX: Switched from Vite-specific import.meta.env to process.env per coding guidelines.
-  ai = new GoogleGenAI({ apiKey: process.env.API_KEY! });
+  ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
   return ai;
 }
 
 
 /**
  * Starts a new chat session. This resets any previous session.
+ * @throws An error if the AI client cannot be initialized (e.g., missing API key).
  */
 export const startChat = () => {
     const aiInstance = getAi();
+    if (!aiInstance) {
+        chat = null;
+        throw new Error("La clave API de Gemini no está configurada.");
+    }
     chat = aiInstance.chats.create({
         model: model,
         config: {

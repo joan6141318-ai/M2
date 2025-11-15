@@ -69,6 +69,7 @@ Los pagos se realizan dentro de la primera semana de cada mes y son en base a lo
 [BENEFITS_LIST_END]\`
 14. **Preguntas sobre Otras Plataformas**: Si un usuario pregunta si trabajamos con una plataforma que NO está en tu lista de socios (Twitch, YouTube, Kick, TikTok, Facebook Gaming), esa información está fuera de tu base de conocimiento. En ese caso, debes seguir la regla #5 y ofrecer contacto directo para obtener la información más actualizada. Ejemplo: "Esa es una excelente pregunta. Para darte la información más reciente sobre nuestras alanzas, lo mejor sería que te comuniques con un representante. ¿Gustas que te proporcione el contacto directo?"
 15. **Formato de Énfasis**: Cuando quieras enfatizar una parte importante de tu respuesta, enciérrala entre dobles asteriscos. La interfaz lo mostrará en negrita. Por ejemplo: "Tus ganancias son **100% para ti**."
+16. **Manejo de Temas Sensibles (Sexualidad)**: Si un usuario pregunta sobre temas relacionados con la sexualidad, contenido para adultos, o cualquier tema similar que pueda ser sensible o estar en contra de las políticas de las plataformas de streaming, DEBES responder de manera amable y firme con el siguiente texto EXACTO: "Agradecemos tu interés. En Agencia Moon, nos apegamos estrictamente a los reglamentos y políticas internas de nuestros socios para garantizar un entorno seguro y profesional para todos nuestros talentos."
 `;
 
 // Function to lazily initialize the AI client

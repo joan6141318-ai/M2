@@ -64,59 +64,56 @@ const TalentDetailModal: React.FC<TalentDetailModalProps> = ({ isOpen, onClose, 
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={onClose}>
       <div 
-        className="bg-black/70 backdrop-blur-2xl border border-white/10 rounded-2xl p-6 sm:p-8 w-full max-w-4xl relative flex flex-col md:flex-row gap-8 animate-scale-in" 
+        className="bg-black/50 backdrop-blur-2xl border border-white/10 rounded-2xl w-full max-w-5xl max-h-[90vh] relative flex flex-col md:flex-row animate-scale-in overflow-hidden" 
         onClick={e => e.stopPropagation()}
       >
-        <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-white z-20">
+        <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-white z-20 p-2 bg-black/30 rounded-full">
           <CloseIcon />
         </button>
 
-        {/* Phone Mockup */}
-        <div className="w-full md:w-[300px] flex-shrink-0 flex items-center justify-center rounded-lg">
-          <div className="relative mx-auto border-gray-800 bg-gray-800 border-[10px] rounded-[2.5rem] h-[550px] w-[270px] shadow-xl">
-            <div className="w-[120px] h-[18px] bg-gray-800 top-0 rounded-b-[1rem] left-1/2 -translate-x-1/2 absolute z-10"></div>
-            <div className="h-[32px] w-[3px] bg-gray-800 absolute -start-[13px] top-[64px] rounded-s-lg"></div>
-            <div className="h-[32px] w-[3px] bg-gray-800 absolute -start-[13px] top-[115px] rounded-s-lg"></div>
-            <div className="h-[50px] w-[3px] bg-gray-800 absolute -end-[13px] top-[100px] rounded-e-lg"></div>
-            <div className="rounded-[2rem] overflow-hidden w-full h-full bg-black relative">
-              {talent.videoId ? (
-                <>
-                  <video
-                    key={talent.videoId}
-                    className="absolute top-0 left-0 w-full h-full object-cover"
-                    src={talent.videoId}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                  >
-                    Your browser does not support the video tag.
-                  </video>
-                  {/* This div prevents any interaction with the video */}
-                  <div className="absolute top-0 left-0 w-full h-full"></div>
-                </>
-              ) : (
-                <img src={talent.imageUrl} alt={talent.name} className="w-full h-full object-cover" />
-              )}
-            </div>
+        {/* Left Side: iPhone Mockup */}
+        <div className="w-full md:w-1/2 flex items-center justify-center p-4 sm:p-8 bg-black/20">
+          <div className="w-full max-w-[280px] aspect-[9/19.5] bg-black border-4 border-gray-700 rounded-[2.5rem] p-2.5 shadow-2xl shadow-purple-900/50">
+              <div className="w-full h-full rounded-[2rem] overflow-hidden relative">
+                  {talent.videoId ? (
+                      <video
+                          key={talent.videoId}
+                          className="w-full h-full object-cover"
+                          src={talent.videoId}
+                          autoPlay muted loop playsInline
+                      />
+                  ) : (
+                      <img src={talent.imageUrl} alt={talent.name} className="w-full h-full object-cover" />
+                  )}
+                  {/* Dynamic Island style notch */}
+                  <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-[40%] h-6 bg-black rounded-full"></div>
+              </div>
           </div>
         </div>
 
-        {/* Info Card */}
-        <div className="w-full flex flex-col justify-center text-center md:text-left py-8 px-8 bg-gradient-to-t from-purple-900/20 to-transparent rounded-lg">
-          <div className="flex items-center justify-center md:justify-start text-purple-400">
-            {renderPlatformIcon(talent.platform)}
-            <span className="ml-2 font-semibold tracking-wider uppercase">{talent.platform}</span>
-          </div>
-          <h2 className="text-4xl md:text-5xl font-extrabold text-white mt-4">{talent.name}</h2>
-          <p className="mt-6 text-gray-300 leading-relaxed">
-            {talent.bio}
-          </p>
-          <div className="mt-8 flex justify-center md:justify-start gap-4">
-             {talent.socials.twitter && <a href={talent.socials.twitter} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white"><TwitterIcon /></a>}
-             {talent.socials.instagram && <a href={talent.socials.instagram} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white"><InstagramIcon /></a>}
-             {talent.socials.tiktok && <a href={talent.socials.tiktok} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white"><TikTokIcon /></a>}
-          </div>
+
+        {/* Right Side: Ficha Técnica */}
+        <div className="w-full md:w-1/2 flex flex-col p-8 bg-black/60 backdrop-blur-sm relative overflow-y-auto">
+            <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-purple-900/50 to-transparent pointer-events-none"></div>
+            
+            <div className="flex items-center text-purple-400">
+                {renderPlatformIcon(talent.platform)}
+                <span className="ml-2 font-semibold tracking-wider uppercase">{talent.platform}</span>
+            </div>
+            
+            <h2 className="text-4xl md:text-5xl font-extrabold text-white mt-4">{talent.name}</h2>
+            
+            <div className="flex-grow mt-6 pr-4 overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
+              <p className="text-gray-300 leading-relaxed">
+                  {talent.bio}
+              </p>
+            </div>
+            
+            <div className="mt-auto pt-6 flex justify-start gap-4">
+                {talent.socials.twitter && <a href={talent.socials.twitter} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white"><TwitterIcon /></a>}
+                {talent.socials.instagram && <a href={talent.socials.instagram} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white"><InstagramIcon /></a>}
+                {talent.socials.tiktok && <a href={talent.socials.tiktok} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white"><TikTokIcon /></a>}
+            </div>
         </div>
       </div>
     </div>

@@ -61,7 +61,7 @@ const FAQ = React.forwardRef<HTMLElement, FAQProps>(({ onOpenPaymentModal }, ref
             <AnimatedSection>
                 <div className="max-w-4xl mx-auto">
                     <div className="text-center mb-16">
-                        <h2 className="text-5xl md:text-7xl font-extrabold tracking-tight text-white">
+                        <h2 className="text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-tight text-white">
                             Preguntas <span className="text-purple-500">Frecuentes</span>
                         </h2>
                         <p className="mt-4 text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">

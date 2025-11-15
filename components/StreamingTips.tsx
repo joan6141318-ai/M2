@@ -116,7 +116,7 @@ const StreamingTips = React.forwardRef<HTMLElement>((props, ref) => {
                       aria-hidden={index !== currentIndex}
                     >
                        <img src={tip.imageUrl} alt={tip.title} className="w-full h-full object-cover"/>
-                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent flex flex-col justify-end p-4 sm:p-8 text-left pb-28">
+                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent flex flex-col justify-end p-4 sm:p-8 text-left pb-28 sm:pb-36">
                           <h3 className="text-2xl sm:text-3xl font-bold text-white">{tip.title}</h3>
                           <p className="text-gray-300 mt-2 text-sm sm:text-base">{tip.description}</p>
                        </div>

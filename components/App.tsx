@@ -18,7 +18,6 @@ import TalentDetailModal from './TalentDetailModal';
 import PaymentTableModal from './PaymentTableModal';
 import AnimatedRobot from './AnimatedRobot';
 import type { Talent } from '../types';
-import { isApiAvailable } from '../services/geminiService';
 
 const App: React.FC = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -37,8 +36,6 @@ const App: React.FC = () => {
   const tipsRef = useRef<HTMLElement>(null);
   const faqRef = useRef<HTMLElement>(null);
   const footerRef = useRef<HTMLElement>(null);
-  
-  const apiAvailable = isApiAvailable();
   
   const handleTalentClick = (talent: Talent) => {
     setSelectedTalent(talent);
@@ -62,13 +59,6 @@ const App: React.FC = () => {
 
   return (
     <>
-      {/* API Key availability check */}
-      {!apiAvailable && (
-        <div className="fixed bottom-4 left-4 z-[9999] bg-red-800 text-white p-3 rounded-lg shadow-lg text-sm border border-red-600 animate-fade-in-up">
-            <strong className="font-bold">Advertencia:</strong> La clave API no está configurada. El chatbot no estará disponible.
-        </div>
-      )}
-
       {/* Background container with new image */}
       <div className="fixed inset-0 z-0">
         <div
@@ -98,8 +88,8 @@ const App: React.FC = () => {
       </div>
 
       {/* Overlays and Modals */}
-      {apiAvailable && <AnimatedRobot onClick={() => setIsChatOpen(!isChatOpen)} />}
-      {apiAvailable && <Chatbot isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />}
+      <AnimatedRobot onClick={() => setIsChatOpen(!isChatOpen)} />
+      <Chatbot isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
       <NavigationMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} navItems={navItems} />
       <ApplicationForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
       <PodcastPlayer isOpen={isPodcastPlayerOpen} onClose={() => setIsPodcastPlayerOpen(false)} />

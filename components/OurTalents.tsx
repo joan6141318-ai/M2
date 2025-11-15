@@ -49,7 +49,7 @@ const talents: Talent[] = [
     name: 'Seli_105',
     platform: 'Bigo Live',
     imageUrl: 'https://i.postimg.cc/Dw1kLCZ3/IMG_20251113_221309.jpg',
-    videoId: 'https://res.cloudinary.com/dskj7hk3c/video/upload/v1721092800/samples/caminandes.mp4',
+    videoId: 'https://player.vimeo.com/video/1137306392',
     bio: '**Creativa, única y muy artística**\nExplora el mundo del arte y diseño en sus directos.\n\nRecord recaudación : 1.8 Millones\n\nPaís: Venezuela',
     isVerified: true,
     socials: {

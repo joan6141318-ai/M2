@@ -36,7 +36,7 @@ const JoinUs = React.forwardRef<HTMLElement, JoinUsProps>(({ onCTAClick }, ref) 
     <section ref={ref} className="py-20 px-4 bg-[#100F13]/50 backdrop-blur-sm">
       <AnimatedSection>
         <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-5xl md:text-7xl font-extrabold tracking-tight text-white">
+          <h2 className="text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-tight text-white">
             Únete a <span className="text-purple-500">Nuestra Comunidad</span>
           </h2>
           <p className="mt-4 text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">

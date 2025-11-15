@@ -128,13 +128,15 @@
 }
 </script>
 <style>
+  /* A more robust way to hide the scrollbar across browsers */
   /* Hide scrollbar for Chrome, Safari and Opera */
+  html::-webkit-scrollbar,
   body::-webkit-scrollbar {
     display: none;
   }
 
   /* Hide scrollbar for IE, Edge and Firefox */
-  body {
+  html, body {
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
   }

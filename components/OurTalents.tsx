@@ -62,7 +62,7 @@ const talents: Talent[] = [
     name: 'boanquita_',
     platform: 'Bigo Live',
     imageUrl: 'https://i.postimg.cc/R0Mtzmk6/IMG_20251107_183411.png',
-    videoId: 'https://raw.githubusercontent.com/joan6141318-ai/Momentos/main/momentos1.mp4',
+    videoId: 'https://player.vimeo.com/video/1137287888?badge=0&autopause=0&player_id=0&app_id=58479',
     bio: '**Dulce, alegre y divertida**\nNo te pierdas sus transmisiones todos los días\n\nRecord recaudación : 1.5 Millones\n\nPaís: Colombia',
     isVerified: true,
     socials: {

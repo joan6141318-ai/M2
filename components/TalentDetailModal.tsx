@@ -83,12 +83,22 @@ const TalentDetailModal: React.FC<TalentDetailModalProps> = ({ isOpen, onClose, 
           <div className="w-full max-w-[200px] sm:max-w-[280px] aspect-[9/19.5] bg-black border-2 border-gray-800 rounded-[1.5rem] sm:rounded-[2.25rem] p-1.5 shadow-2xl shadow-purple-900/50">
               <div className="w-full h-full rounded-[1.4rem] sm:rounded-[2rem] overflow-hidden relative">
                   {talent.videoId ? (
-                      <video
-                          key={talent.videoId}
-                          className="w-full h-full object-cover"
-                          src={talent.videoId}
-                          autoPlay muted loop playsInline
-                      />
+                    talent.videoId.includes('vimeo') ? (
+                        <iframe
+                            src={`${talent.videoId}&background=1`}
+                            className="w-full h-full"
+                            frameBorder="0"
+                            allow="autoplay; fullscreen; picture-in-picture"
+                            title={talent.name}
+                        ></iframe>
+                    ) : (
+                        <video
+                            key={talent.videoId}
+                            className="w-full h-full object-cover"
+                            src={talent.videoId}
+                            autoPlay muted loop playsInline
+                        />
+                    )
                   ) : (
                       <img src={talent.imageUrl} alt={talent.name} className="w-full h-full object-cover" />
                   )}
